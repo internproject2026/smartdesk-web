@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------- */
+/* Theme tokens. Values are "R G B" (no commas, no rgb()) so Tailwind's    */
+/* rgb(var(--x) / <alpha-value>) opacity modifiers work correctly.         */
+/* ---------------------------------------------------------------------- */
+
+:root {
+  /* Light theme (default) */
+  --c-ink: 255 255 255;
+  --c-panel: 255 255 255;
+  --c-surface: 248 250 252;
+  --c-card: 255 255 255;
+  --c-border: 226 232 240;
+  --c-muted: 100 116 139;
+  --c-ghost: 51 65 85;
+  --c-heading: 15 23 42;
+  --c-on-accent: 255 255 255;
+
+  --c-signal: 37 99 235;
+
+  --c-status-online: 5 150 105;
+  --c-status-offline: 217 119 6;
+  --c-status-critical: 220 38 38;
+  --c-status-neutral: 100 116 139;
+
+  /* Glow/grid effects are a dark-theme signature — off by default in light mode */
+  --glow-o1: 0;
+  --glow-o2: 0;
+  --grid-o: 0.035;
+}
+
+.dark {
+  --c-ink: 11 15 23;
+  --c-panel: 17 24 38;
+  --c-surface: 11 15 23;
+  --c-card: 15 22 34;
+  --c-border: 34 48 74;
+  --c-muted: 124 138 165;
+  --c-ghost: 184 196 218;
+  --c-heading: 255 255 255;
+  --c-on-accent: 11 15 23;
+
+  --c-signal: 34 211 238;
+
+  --c-status-online: 52 211 153;
+  --c-status-offline: 251 191 36;
+  --c-status-critical: 248 113 113;
+  --c-status-neutral: 100 116 139;
+
+  --glow-o1: 0.35;
+  --glow-o2: 0.4;
+  --grid-o: 0.06;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-surface text-ghost antialiased transition-colors duration-200;
+  background-image: theme('backgroundImage.grid');
+  background-size: theme('backgroundSize.grid');
+}
+
+/* Visible keyboard focus everywhere — accessibility requirement, not optional */
+:focus-visible {
+  outline: 2px solid rgb(var(--c-signal));
+  outline-offset: 2px;
+}
+
+/* Glass panel — the base surface every card/HUD panel is built from */
+.hud-panel {
+  @apply relative rounded-lg border border-border bg-panel/60 backdrop-blur-sm transition-colors duration-200;
+}
+
+/* Corner brackets — the signature HUD accent, layered onto .hud-panel via ::before/::after */
+.hud-panel::before,
+.hud-panel::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-color: rgb(var(--c-signal));
+  opacity: 0.7;
+  pointer-events: none;
+}
+.hud-panel::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+}
+.hud-panel::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid;
+  border-right: 2px solid;
+}
+
+.text-glow {
+  text-shadow: 0 0 12px rgb(var(--c-signal) / var(--glow-o1, 0));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
